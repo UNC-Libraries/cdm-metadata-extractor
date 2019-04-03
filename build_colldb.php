@@ -1,10 +1,9 @@
 <?php
 
 /*
- * This script attempts to build an SQLite DB from a CDM collection exported
- * as "CONTENTdm standard XML" with "include child metadata" selected.
+ * This script uses an xml file from the build_xml_input script to create a SQLite database.
  * The SQLite DB will help with migration processes
- * (downloading files via CDM API, building METS representation).
+ * (metadata remediation, downloading files via CDM API, building METS representation).
  *
  * USAGE:
  * This script needs to be run from the command line. Not only does it require
@@ -13,7 +12,7 @@
  * php buld_colldb.php [path to cdm xml file] [collection alias] override*
  *
  * e.g.:
- * php build_colldb.php cdm_data/avcdmstandard.xml avoralhist
+ * php build_colldb.php unctshirts.xml unctshirts
  *
  * --Please provide the CDM collection alias without any slashes.
  *
