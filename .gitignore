@@ -1,0 +1,6 @@
+*
+!.gitignore
+!build_colldb.php
+!build_xml_input.php
+!download_masterfiles.php
+!README.md
