@@ -10,11 +10,11 @@ All scripts require PHP 5+ command-line interface.
 Before use, edit scripts to match CDM server
 
 ### build_xml_input.php
-A script to a produce an xml structural report for a CONTENTdm collection with or without compound objects. Outputs parent object pointers and child object pointers in nested xml.
+This script produces an xml structural report for a CONTENTdm collection. Outputs parent object pointers and child object pointers in nested xml.
 
 The resulting xml file can be fed into build_colldb.php to create a database that includes descriptive, structural, and administrative metadata for the collection.
 
-Output from this script is structured similarly to CDM's native "CONTENTdm standard XML" export type, but is created with api calls which allows the script to process large collections that cause gateway timeout errors when export is attempted within the CONTENTdm admin interface.
+Output from this script is structured similarly to CDM's native "CONTENTdm standard XML" export type, but is created with api calls, allowing the script to process large collections that cause gateway timeout errors when export is attempted from the CONTENTdm admin interface.
 
 USAGE: 
 This script needs to be run from the command line.
