@@ -10,7 +10,7 @@ All scripts require PHP 5+ command-line interface.
 Before use, edit scripts to match CDM server
 
 ### build_xml_input.php
-This script produces an xml structural report for a CONTENTdm collection. Outputs parent object pointers and child object pointers in nested xml.
+This script produces an xml structural report for a CONTENTdm collection. It outputs parent object pointers and child object pointers in nested xml.
 
 The resulting xml file can be fed into build_colldb.php to create a database that includes descriptive, structural, and administrative metadata for the collection.
 
@@ -18,12 +18,12 @@ Output from this script is structured similarly to CDM's native "CONTENTdm stand
 
 USAGE: 
 This script needs to be run from the command line.
-Requires the --alias option (which tells it what collection to inspect).
+Requires the alias argument (which tells it what collection to inspect).
 
-php cdminspect --alias=cdmalias
+php build_xml_input.php cdmalias
 
 e.g.:
-php cdminspect --alias=unctshirts
+php build_xml_input.php unctshirts
 
 ### build_colldb.php
 This script attempts to build an SQLite DB from xml file created with build_xml_input.php. The SQLite DB will help with migration processes (downloading files via CDM API, building METS representation, metadata remediation).

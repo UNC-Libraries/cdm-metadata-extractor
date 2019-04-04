@@ -16,16 +16,17 @@
  *****************************/
 $line_separator = PHP_EOL;
 
-$options = getopt('', array(
-  'alias:'
-));
 
-$alias = '/' . $options['alias'];
-
-$batch_plugin = 'plugins/get_cpd_files.plugin';
-if (!file_exists($batch_plugin)) {
-  exit("Can't find plugin $batch_plugin." . PHP_EOL);
+// check for arguments
+if(!isset($argv[1])){
+  exit("Missing required arguments.");
+} else {
+  $options = $argv[1];
 }
+
+
+$alias = '/' . $options;
+
 
 // URL to the CONTENTdm web services API.
 
@@ -99,17 +100,73 @@ if (!$prelim_results['pager']['total']) {
   exit;
 }
 
-/*****************************************************************************************************
- * Main program loop is handled by the plugin, which is invoked here and performs as many queries as *
- * required to get all the records in the collection identified by the alias.                        *
- ****************************************************************************************************/
-
-// Include the indicated plugin, which contains the run_batch() function.
-include $batch_plugin;
 
 run_batch($prelim_results['pager']['total'], $num_chunks);
-$output_dir = ltrim($alias, '/') . '_cpd_files';
-$output_file_path = $output_dir . DIRECTORY_SEPARATOR . $alias . '_cpd.xml';
+
+function run_batch($total_recs, $num_chunks) {
+  global $start_at;
+  global $rec_num;
+  global $chunk_size;
+  global $last_rec;
+  global $alias;
+  global $output_file_path;
+
+  print PHP_EOL . "Retrieving structural file for the '$alias' collection..." . PHP_EOL;
+
+  $output_dir = ltrim($alias, '/') . '_xml_file';
+  if (!file_exists($output_dir)) {
+    mkdir($output_dir);
+  }
+
+  $output_file_path = $output_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
+  file_put_contents($output_file_path, '<bulk>'. "\n", FILE_APPEND);
+
+  $rows = array();
+  for ($processed_chunks = 1; $processed_chunks <= $num_chunks; $processed_chunks++) {
+    if (!$results = query_contentdm($start_at, $processed_chunks, $num_chunks)) {
+      print "Could not connect to CONTENTdm to start retrieving chunk starting at record $start_at, moving on to next chunk" . PHP_EOL;
+    }
+    $start_at = $chunk_size * $processed_chunks + 1;
+    foreach ($results['records'] as $results_record) {
+      $rec_num++;
+      print_progress_bar($total_recs, $rec_num);
+
+      // This function handles each record.
+      if ($compound_info = process_item($results_record)) {
+        file_put_contents($output_file_path, '<record>' . "\n" . '<cdmid>' . $results_record['pointer'] . '</cdmid>' . $compound_info . '</record>' . "\n", FILE_APPEND);
+      }
+
+      if ($last_rec !== 0) {
+        if ($rec_num == $last_rec) {
+          exit;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Processes each record in the browse results.
+ */
+function process_item($results_record) {
+  $compound_info = get_compound_object_info($results_record['collection'], $results_record['pointer'], 'xml');
+  $cpd = new SimpleXMLElement($compound_info);
+  if (isset($cpd->type)) {
+    $compound_info = substr($compound_info, strpos($compound_info, '?'.'>') + 2);
+    $tags = array("<node>\n", "</node>\n");
+    $compound_info = str_replace($tags, "", $compound_info);
+
+    return $compound_info;
+  }else {
+    return("\n");
+}
+  
+}
+
+
+
+$output_dir = ltrim($alias, '/') . '_xml_file';
+$output_file_path = $output_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
 file_put_contents($output_file_path, '</bulk>', FILE_APPEND);
 print $line_separator . "Done." . $line_separator;
 
