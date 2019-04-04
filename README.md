@@ -20,10 +20,10 @@ USAGE:
 This script needs to be run from the command line.
 Requires the --alias option (which tells it what collection to inspect).
 
-php cdminspect --alias=cdmalias
+php build_xml_input --alias=cdmalias
 
 e.g.:
-php cdminspect --alias=unctshirts
+php build_xml_input --alias=unctshirts
 
 ### build_colldb.php
 This script attempts to build an SQLite DB from xml file created with build_xml_input.php. The SQLite DB will help with migration processes (downloading files via CDM API, building METS representation, metadata remediation).
