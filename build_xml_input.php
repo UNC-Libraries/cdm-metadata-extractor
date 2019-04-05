@@ -112,14 +112,10 @@ function run_batch($total_recs, $num_chunks) {
   global $output_file_path;
 
   print PHP_EOL . "Retrieving structural file for the '$alias' collection..." . PHP_EOL;
+  $current_dir = getcwd();
 
-  $output_dir = ltrim($alias, '/') . '_xml_file';
-  if (!file_exists($output_dir)) {
-    mkdir($output_dir);
-  }
-
-  $output_file_path = $output_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
-  file_put_contents($output_file_path, '<bulk>'. "\n", FILE_APPEND);
+  $output_file_path = $current_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
+  file_put_contents($output_file_path, '<bulk>'. "\n");
 
   $rows = array();
   for ($processed_chunks = 1; $processed_chunks <= $num_chunks; $processed_chunks++) {
@@ -164,9 +160,8 @@ function process_item($results_record) {
 }
 
 
-
-$output_dir = ltrim($alias, '/') . '_xml_file';
-$output_file_path = $output_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
+$current_dir = getcwd();
+$output_file_path = $current_dir . DIRECTORY_SEPARATOR . $alias . '_structure.xml';
 file_put_contents($output_file_path, '</bulk>', FILE_APPEND);
 print $line_separator . "Done." . $line_separator;
 
