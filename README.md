@@ -1,7 +1,7 @@
 # cdm-metadata-extractor
 A suite of php scripts to extract metadata and files from CONTENTdm
 
-build_colldb.php and download_masterfiles.php are adapted from North Carolina Digital Heritage Center's scripts for migrating out of CONTENTdm. build_xml_input.php is adapted from SFU's cdminspect tool.
+build_colldb.php and download_masterfiles.php are adapted from North Carolina Digital Heritage Center's scripts for migrating out of CONTENTdm. build_xml_input.php is adapted from Simon Fraser University's cdminspect tool.
 
 These scripts are not necessicarily written using modern PHP best practices since they were adapted quickly to help with Univeristy of North Carolina at Chapel Hill Library's migration out of CONTENTdm.
 
