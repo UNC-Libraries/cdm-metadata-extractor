@@ -47,3 +47,11 @@ php download_masterfiles.php path/to.sqlite3 cdmalias
 
 e.g.:
 php download_masterfiles.php unctshirts.sqlite3 unctshirts
+
+
+### cdm-id-dedup.xsl
+This dedups the xml record created by build_xml_input.php. Because of underlying index issues, records may be duplicated in the xml record created by build_xml_input.php. This xsl script can be run on the output from build_xml_input.php to dedup the xml. There's probably a more efficient way to do this within the build_xml_input.php script, but it would probably need developer support to implement.
+
+USAGE:
+
+run this on the xml output created with build_xml_input.php
