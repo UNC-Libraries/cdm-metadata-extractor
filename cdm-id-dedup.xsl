@@ -4,6 +4,9 @@
     exclude-result-prefixes="xs"
     version="2.0">
     <xsl:template match="/">
+        <xsl:text>&#xa;</xsl:text>
+        <bulk>
+        <xsl:text>&#xa;</xsl:text>
         <xsl:copy-of select="/*/record
             [index-of(/*/record/cdmid, 
             cdmid
@@ -11,5 +14,7 @@
             [1]
             ]">
         </xsl:copy-of>
+        <xsl:text>&#xa;</xsl:text>
+        </bulk>
     </xsl:template>
 </xsl:stylesheet>
